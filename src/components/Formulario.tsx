@@ -1,47 +1,73 @@
-import { useState } from 'react';
 import useClima from '../hooks/useClima';
 
-const Formulario = () => {
-  const [alerta, setAlerta] = useState('');
+const PAISES = [
+  { codigo: 'US', nombre: 'Estados Unidos' },
+  { codigo: 'MX', nombre: 'México' },
+  { codigo: 'AR', nombre: 'Argentina' },
+  { codigo: 'CO', nombre: 'Colombia' },
+  { codigo: 'CR', nombre: 'Costa Rica' },
+  { codigo: 'ES', nombre: 'España' },
+  { codigo: 'PE', nombre: 'Perú' },
+];
 
-  const { busqueda, datosBusqueda, consultarClima } = useClima();
+const Formulario = () => {
+  const { busqueda, datosBusqueda, consultarClima, estado } = useClima();
   const { ciudad, pais } = busqueda;
+
+  const cargando = estado === 'cargando';
+  const completo = ciudad.trim() !== '' && pais !== '';
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (Object.values(busqueda).includes('')) {
-      setAlerta('Todos los campos son obligatorios');
-      return;
-    }
-    setAlerta('');
+    if (!completo || cargando) return;
     void consultarClima(busqueda);
   };
 
   return (
-    <div className="contenedor">
-      {alerta && <p>{alerta}</p>}
-      <form onSubmit={handleSubmit}>
+    <section className="contenedor tarjeta-formulario">
+      <form onSubmit={handleSubmit} noValidate>
         <div className="campo">
           <label htmlFor="ciudad">Ciudad</label>
-          <input type="text" id="ciudad" name="ciudad" onChange={datosBusqueda} value={ciudad} />
+          <input
+            type="text"
+            id="ciudad"
+            name="ciudad"
+            placeholder="Ej. Buenos Aires"
+            autoComplete="address-level2"
+            value={ciudad}
+            onChange={datosBusqueda}
+            disabled={cargando}
+          />
         </div>
+
         <div className="campo">
-          <label htmlFor="pais">Pais</label>
-          <select id="pais" name="pais" onChange={datosBusqueda} value={pais}>
-            <option value="">Seleccione un pais</option>
-            <option value="US">Estados Unidos</option>
-            <option value="MX">México</option>
-            <option value="AR">Argentina</option>
-            <option value="CO">Colombia</option>
-            <option value="CR">Costa Rica</option>
-            <option value="ES">España</option>
-            <option value="PE">Perú</option>
+          <label htmlFor="pais">País</label>
+          <select id="pais" name="pais" value={pais} onChange={datosBusqueda} disabled={cargando}>
+            <option value="">Selecciona un país</option>
+            {PAISES.map((p) => (
+              <option key={p.codigo} value={p.codigo}>
+                {p.nombre}
+              </option>
+            ))}
           </select>
         </div>
-        <input type="submit" value="Consultar Clima" />
+
+        <p className="pista" aria-live="polite">
+          {completo ? ' ' : 'Completa la ciudad y el país para consultar el clima.'}
+        </p>
+
+        <button type="submit" className="boton-enviar" disabled={!completo || cargando}>
+          {cargando ? (
+            <>
+              <span className="boton-spinner" aria-hidden="true" />
+              Consultando…
+            </>
+          ) : (
+            'Consultar clima'
+          )}
+        </button>
       </form>
-    </div>
+    </section>
   );
 };
 
