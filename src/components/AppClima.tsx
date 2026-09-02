@@ -1,24 +1,22 @@
 import Formulario from './Formulario';
 import Resultado from './Resultado';
 import Loading from './Loading';
+import EstadoVacio from './EstadoVacio';
 import useClima from '../hooks/useClima';
 
 const AppClima = () => {
-  const { resultado, cargando, noResultado } = useClima();
+  const { estado, error } = useClima();
 
   return (
     <main className="dos-columnas">
       <Formulario />
 
-      {cargando ? (
-        <Loading />
-      ) : resultado.name ? (
-        <Resultado />
-      ) : noResultado ? (
-        <p>{noResultado}</p>
-      ) : (
-        <p>El clima se va a mostrar aqui</p>
-      )}
+      <section className="panel-resultado" aria-live="polite" aria-busy={estado === 'cargando'}>
+        {estado === 'cargando' && <Loading />}
+        {estado === 'exito' && <Resultado />}
+        {estado === 'error' && <EstadoVacio tipo="error" mensaje={error} />}
+        {estado === 'inicial' && <EstadoVacio tipo="inicial" />}
+      </section>
     </main>
   );
 };
