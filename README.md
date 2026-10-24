@@ -67,10 +67,14 @@ yarn install
 
 ### Variables de entorno
 
-Copia `.env.example` a `.env` y pon tu clave:
+Copia `.env.example` a `.env` (ignorado por git) y pon tu clave:
 
 ```bash
-VITE_API_KEY=API KEY
+cp .env.example .env
+```
+
+```env
+VITE_API_KEY=your_api_key
 ```
 
 | Variable       | Descripción                                                    |
@@ -81,14 +85,14 @@ VITE_API_KEY=API KEY
 
 ### Scripts
 
-| Comando             | Descripción                                          |
-| ------------------- | ---------------------------------------------------- |
-| `yarn dev`          | Servidor de desarrollo de Vite.                      |
-| `yarn build`        | Compila TypeScript (`tsc -b`) y genera `dist/`.      |
-| `yarn preview`      | Sirve localmente el build de producción.             |
-| `yarn lint`         | ESLint con 0 warnings permitidos.                    |
-| `yarn format:check` | Comprueba el formato con Prettier.                   |
-| `yarn format:fix`   | Formatea todo el proyecto con Prettier.              |
+| Comando             | Descripción                                     |
+| ------------------- | ----------------------------------------------- |
+| `yarn dev`          | Servidor de desarrollo de Vite.                 |
+| `yarn build`        | Compila TypeScript (`tsc -b`) y genera `dist/`. |
+| `yarn preview`      | Sirve localmente el build de producción.        |
+| `yarn lint`         | ESLint con 0 warnings permitidos.               |
+| `yarn format:check` | Comprueba el formato con Prettier.              |
+| `yarn format:fix`   | Formatea todo el proyecto con Prettier.         |
 
 ---
 
@@ -205,13 +209,13 @@ clima-app/
 
 ## Personalización
 
-| Qué                       | Dónde                                   | Por defecto                     |
-| ------------------------- | --------------------------------------- | ------------------------------- |
-| Países disponibles        | `PAISES` en `Formulario.tsx`            | 7 países                        |
-| URL base de la API        | `API` en `ClimaProvider.tsx`            | `https://api.openweathermap.org` |
-| Unidades e idioma         | Query de `climaUrl` (`units`, `lang`)   | `metric`, `es`                  |
-| Clave del tema guardado   | `STORAGE_KEY` en `useTheme.ts`          | `clima-tema`                    |
-| Colores de cada tema      | Variables CSS en `index.css`            | Azul cielo (`--primario`)       |
+| Qué                     | Dónde                                 | Por defecto                      |
+| ----------------------- | ------------------------------------- | -------------------------------- |
+| Países disponibles      | `PAISES` en `Formulario.tsx`          | 7 países                         |
+| URL base de la API      | `API` en `ClimaProvider.tsx`          | `https://api.openweathermap.org` |
+| Unidades e idioma       | Query de `climaUrl` (`units`, `lang`) | `metric`, `es`                   |
+| Clave del tema guardado | `STORAGE_KEY` en `useTheme.ts`        | `clima-tema`                     |
+| Colores de cada tema    | Variables CSS en `index.css`          | Azul cielo (`--primario`)        |
 
 ---
 
